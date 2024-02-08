@@ -1,14 +1,21 @@
-import AriaTest from "./components/aria-test"
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 
-function App() {
-  return (
-    <main>
-      <h1 className="font-bold text-3xl text-blue-500">
-        Hello world!
-      </h1>
-      <AriaTest />
-    </main>
-  )
+import { routeTree } from "./routeTree.gen";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "store";
+
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
 }
 
-export default App
+export default function App() {
+  return (
+    <ReduxProvider store={store}>
+      <RouterProvider router={router} />
+    </ReduxProvider>
+  );
+}
